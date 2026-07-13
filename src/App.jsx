@@ -1,32 +1,35 @@
 import React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import FetchMeals from './Component/FetchMeals';
-import FetchMealsAxios from './Component/FetchMealsAxios';
 import MealGrid from './Component/MealGrid';
 import SearchBar from './Component/SearchBar';
+import Navbar from './Component/NavBar';
+import useDebounce from './CustomHook/useDebounce';
+import FilterChips from './Component/FilterChips';
+import MealDetailView from './Component/MealDetailView';
 
 function MyApp() {
     const [meals, setMeals] = React.useState([]);
     const [searchTerm, setSearchTerm] = React.useState('');
-    return (
-        <div>
-            {/* <nav>
-                <ul>
-                    <li><Link to="/FetchMeals">FetchMeals</Link></li>
-                    <li><Link to="/FetchMealsAxios">FetchMealsAxios</Link></li>
-                </ul>
-            </nav> */}
-            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            <FetchMealsAxios searchTerm={searchTerm} setMeals={setMeals} />
-            
-            <p>Text Value: {searchTerm}</p>
-            <MealGrid meals={meals} />
-            {/* <Routes>
-                <Route path="/FetchMeals" element={<FetchMeals />} />
-                <Route path="/FetchMealsAxios" element={<FetchMealsAxios />} />
-            </Routes> */}
-        </div>
+    const [selectedFilter, setSelectedFilter] = React.useState('All');
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
+    const homePage = (
+        <div>
+            <Navbar favoritesCount={0} />
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <FilterChips selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
+            <FetchMeals debouncedSearchTerm={debouncedSearchTerm} setMeals={setMeals} />
+            <p>Search Text: {searchTerm}</p>
+            <MealGrid meals={meals} selectedFilter={selectedFilter} />
+        </div>
+    );
+
+    return (
+        <Routes>
+            <Route path="/" element={homePage} />
+            <Route path="/meal/:mealId" element={<MealDetailView meals={meals} />} />
+        </Routes>
     );
 }
 

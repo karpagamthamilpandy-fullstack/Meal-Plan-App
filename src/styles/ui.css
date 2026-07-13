@@ -1,0 +1,58 @@
+.home-panel {
+  background: #fffaf5;
+  border: 1px solid #d9c8b8;
+  border-radius: 20px;
+  box-shadow: 0 14px 30px rgba(84, 56, 34, 0.08);
+}
+
+.home-panel--main {
+  padding: 20px;
+}
+
+.home-panel--detail,
+.home-panel--favorites {
+  padding: 18px;
+}
+
+.home-section-title {
+  margin: 0 0 14px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7f5d46;
+}
+
+.home-pill,
+.home-icon-button,
+.home-chip,
+.home-button {
+  border: 1px solid #d9c8b8;
+  background: #fff;
+  color: #4a3528;
+  border-radius: 999px;
+  font: inherit;
+}
+
+.home-pill {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.home-button {
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: #f08a4b;
+  color: #fff;
+  border-color: #f08a4b;
+}
+
+.home-icon-button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  background: #fff7f1;
+}

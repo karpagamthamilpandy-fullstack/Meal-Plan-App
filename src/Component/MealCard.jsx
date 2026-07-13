@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-function MealCard({meal}) {
-return(
-    <div>
-        <h3>Meal Card</h3>
-        <img src={meal.strMealThumb} alt={meal.strMeal} />
-        <p>{meal.strCategory}</p>
-        <p>{meal.strArea}</p>
-    </div>
-)
-
+function MealCard({ meal }) {
+    return (
+        <div>
+            <h3>Meal Card</h3>
+            <img src={meal.strMealThumb} alt={meal.strMeal} />
+            <p>Meal Name: {meal.strMeal}</p>
+            <p>Category: {meal.strCategory}</p>
+            <p>Area: {meal.strArea}</p>
+        </div>
+    );
 }
+
 export default MealCard;
