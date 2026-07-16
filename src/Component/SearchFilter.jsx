@@ -11,6 +11,42 @@ const { data: categoriesResponse, loading: categoriesLoading, error: categoriesE
   const categories = categoriesResponse?.meals || []
   const areas = areasResponse?.meals || []
 
+// To remove duplication and sort in ascending
+const sortedUniqueAreas = [
+  ...new Map(
+    areas.map(area => [area.strArea, area])
+  ).values()
+].sort((a, b) => a.strArea.localeCompare(b.strArea));
+
+
+const searchTermLogic=
+  (e) =>{
+    const value=e.target.value;
+    setSearchTerm(value);
+    setSelectedArea('');
+    setSelectedCategory('')
+
+  };
+
+const selectedFilterCategoryLogic=
+  (e) =>{
+    const value=e.target.value;
+    setSelectedCategory(value);
+
+    setSearchTerm('');
+    setSelectedArea('')
+
+  };
+const selectedFilterAreaLogic=
+  (e) =>{
+    const value=e.target.value;
+    setSelectedArea(value);
+
+    setSearchTerm('');
+    setSelectedCategory('')
+
+  };
+
     return (
 <>
 
@@ -24,7 +60,8 @@ const { data: categoriesResponse, loading: categoriesLoading, error: categoriesE
       type="text"
       placeholder="Search meals... 'biryani'"
       value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+     // onChange={(e) => setSearchTerm(e.target.value)}
+      onChange={searchTermLogic}
     />
   </div>
 <div>
@@ -32,7 +69,8 @@ const { data: categoriesResponse, loading: categoriesLoading, error: categoriesE
   <select
     className="filter-select"
     value={selectedCategory}
-    onChange={(e) => setSelectedCategory(e.target.value)}
+    // onChange={(e) => { setSelectedCategory(e.target.value)}}
+    onChange={selectedFilterCategoryLogic}
   >
     <option value="">Category</option>
 
@@ -48,19 +86,20 @@ const { data: categoriesResponse, loading: categoriesLoading, error: categoriesE
 
   <select
     className="filter-select"
-    value={selectedArea}
-    onChange={(e) => setSelectedArea(e.target.value)}
+    value={selectedArea} 
+    //onChange={(e) =>  setSelectedArea(e.target.value)}
+    onChange={selectedFilterAreaLogic}
   >
     <option value="">Cuisine</option>
 
-    {areas.map((area) => (
-      <option
-        key={area.strArea}
-        value={area.strArea}
-      >
-        {area.strArea}
-      </option>
-    ))}
+   {sortedUniqueAreas.map((area) => (
+  <option
+    key={area.strArea}
+    value={area.strArea}
+  >
+    {area.strArea}
+  </option>
+))}
   </select>
 </div>
 </div>

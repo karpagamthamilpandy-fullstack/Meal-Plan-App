@@ -1,24 +1,28 @@
-import React from 'react';
+import React,{createContext, useContext} from 'react';
 import { Route, Routes } from 'react-router-dom';
-import FetchMeals from './Component/FetchMeals';
+
 import MealGrid from './Component/MealGrid';
 import SearchFilter from './Component/SearchFilter';
 import Navbar from './Component/NavBar';
 import useDebounce from './CustomHook/useDebounce';
-import FilterChips from './Component/FilterChips';
+import useMeals from './CustomHook/useMeals';
 import MealDetailView from './Component/MealDetailView';
+import useLocalStorage from './CustomHook/useLocalStorage';
 
+export const favContext=createContext();
 function MyApp() {
-    const [meals, setMeals] = React.useState([]);
+    
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [selectedFilter, setSelectedFilter] = React.useState('All');
     const [selectedCategory, setSelectedCategory] = React.useState('');
     const [selectedArea, setSelectedArea] = React.useState('');
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const [favorites,setFavorites]=useLocalStorage("favorites",[]);
+    const { meals,loading,error} = useMeals(searchTerm, selectedCategory, selectedArea);
 
+ 
     const homePage = (
         <div>
-            <Navbar favoritesCount={0} />
+            <Navbar favoritesCount={favorites.length} />
+           
             <SearchFilter 
             searchTerm={searchTerm} setSearchTerm={setSearchTerm} 
             selectedCategory={selectedCategory}
@@ -26,16 +30,47 @@ function MyApp() {
             selectedArea={selectedArea}
             setSelectedArea={setSelectedArea}
              />
-            {/* <FilterChips
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-                selectedArea={selectedArea}
-                setSelectedArea={setSelectedArea}
-            /> */}
-            <FetchMeals debouncedSearchTerm={debouncedSearchTerm} setMeals={setMeals} />
-            <p>Search Text: {searchTerm}</p>
-            <MealGrid meals={meals} selectedFilter={selectedFilter} />
+           {loading && <p>Loading meals...</p>}
+
+            {error && (
+                <p style={{ color: 'red' }}>
+                    Error: {error.message}
+                </p>
+            )}
+
+            {!loading &&
+                !error &&
+                searchTerm &&
+                meals.length === 0 && (
+                    <p>
+                        No "{searchTerm}" found..
+                    </p>
+                )}
+             {!loading &&
+                !error &&
+                selectedCategory &&
+                meals.length === 0 && (
+                    <p>
+                        Oops "{selectedCategory}" not found....
+                    </p>
+                )}
+                 {!loading &&
+                !error &&
+                selectedArea &&
+                meals.length === 0 && (
+                    <p>
+                        Oh "{selectedArea}" Cuisine not found in the List....
+                    </p>
+                )}
+             {/* <MealGrid meals={meals} favorites={favorites} setFavorites={setFavorites}/>
+           {console.log(favorites)} 
+            */}
+           <favContext.Provider value={{favorites, setFavorites}}>
+                    <MealGrid meals={meals} />
+                    {console.log(favorites)} 
+           </favContext.Provider>
         </div>
+        
     );
 
     return (

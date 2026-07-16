@@ -1,30 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import MealCard from './MealCard';
+import '../styles/MealGrid.css';
+import { useContext } from 'react';
+import { favContext } from '../App';
 
-function MealGrid({ meals, selectedFilter }) {
+// function MealGrid({ meals ,favorites,setFavorites}) {
+function MealGrid({ meals }) {
     const navigate = useNavigate();
-    const filteredMeals = selectedFilter === 'All' ? meals : meals.filter((meal) => {
-        if (selectedFilter === 'Veg') {
-            const category = meal.strCategory?.toLowerCase() || '';
-            return category.includes('vegetarian') || category.includes('veg');
-        }
-        if (selectedFilter === 'Seafood') {
-            return meal.strCategory === 'Seafood';
-        }
-        if (selectedFilter === 'Dessert') {
-            return meal.strCategory === 'Dessert';
-        }
-        if (selectedFilter === 'Indian') {
-            return meal.strArea === 'Indian';
-        }
-        return true;
-    });
-
+ const {favorites, setFavorites}=useContext(favContext);
     return (
-        <div className="meal-grid">
-            {filteredMeals.map((meal) => (
+        <div className="meals-grid">
+            {meals.map((meal) => (
                 <div key={meal.idMeal} onClick={() => navigate(`/meal/${meal.idMeal}`)}>
-                    <MealCard meal={meal} />
+                    {/* <MealCard meal={meal} favorites={favorites} setFavorites={setFavorites} /> */}
+                   <MealCard meal={meal} />
                 </div>
             ))}
         </div>

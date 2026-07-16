@@ -32,6 +32,7 @@
   color: #4a3528;
   border-radius: 999px;
   font: inherit;
+  
 }
 
 .home-pill {
@@ -47,6 +48,7 @@
   background: #f08a4b;
   color: #fff;
   border-color: #f08a4b;
+  cursor: pointer;
 }
 
 .home-icon-button {

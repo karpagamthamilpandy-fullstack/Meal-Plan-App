@@ -15,3 +15,6 @@ export const getRandomMeal = () =>
 
 export const getMealsByCategory = (category) =>
   `${BASE_URL}/filter.php?c=${category}`;
+
+export const getMealsByArea = (area) =>
+  `${BASE_URL}/filter.php?a=${area}`;
