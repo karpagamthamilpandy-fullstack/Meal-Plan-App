@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { favContext } from '../App';
+import { favContext } from '../context/favoritesContext';
 
 function MealCard({ meal }) {
   const { favorites, setFavorites } = useContext(favContext);
