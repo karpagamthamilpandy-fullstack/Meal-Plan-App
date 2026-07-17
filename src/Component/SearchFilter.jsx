@@ -5,7 +5,9 @@ import { getListCategoriesOrAreas } from '../Services/MealAPI'
 
 
 function SearchFilter({ searchTerm, setSearchTerm ,selectedCategory, setSelectedCategory, selectedArea, setSelectedArea }) {
-const { data: categoriesResponse, loading: categoriesLoading, error: categoriesError } = useFetch(getListCategoriesOrAreas('c'))
+
+  //renaming Object destructing 
+  const { data: categoriesResponse, loading: categoriesLoading, error: categoriesError } = useFetch(getListCategoriesOrAreas('c'))
   const { data: areasResponse, loading: areasLoading, error: areasError } = useFetch(getListCategoriesOrAreas('a'))
 
   const categories = categoriesResponse?.meals || []

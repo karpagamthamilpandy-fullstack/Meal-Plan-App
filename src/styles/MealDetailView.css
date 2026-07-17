@@ -1,10 +1,12 @@
 .meal-detail-view {
-  max-width: 1100px;
+   width: 95%;
+  max-width: 1600px;
   margin: 40px auto;
   padding: 32px;
   background: linear-gradient(145deg, #ffffff, #f8fafc);
   border-radius: 24px;
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  text-align: left;
 }
 
 .meal-detail-empty {
@@ -37,7 +39,7 @@
   border-radius: 999px;
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: 200px;
+  margin-bottom: 20px;
   transition: all 0.25s ease;
   
 }

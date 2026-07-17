@@ -1,31 +1,34 @@
-import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate,useLocation } from "react-router-dom";
+import useMealById from "../CustomHook/useMealById";
 import '../styles/MealDetailView.css';
 
-function MealDetailView({ meals }) {
+function MealDetailView() {
+   const location = useLocation();
+
+  const isRandomMeal = location.state?.isRandomMeal ?? false;
+
   const navigate = useNavigate();
-  const { mealId } = useParams();
-  const meal = meals.find((item) => item.idMeal === mealId);
-  
-const ingredientList = Array.from({ length: 20 }, (_, index) => {
-  const ingredient = meal[`strIngredient${index + 1}`];
-  const measure = meal[`strMeasure${index + 1}`];
+const { mealId } = useParams();
+const { meal, loading, error } = useMealById(mealId);
+  if (loading) return <h2>Loading...</h2>;
+if (error) {return <h2>Error: {error}</h2>;}
 
-  return {
-    ingredient,
-    measure
-  };
-}).filter(item => item.ingredient?.trim());
+  const ingredientList = Array.from({ length: 20 }, (_, index) => ({
+  ingredient: meal?.[`strIngredient${index + 1}`]?.trim(),
+  measure: meal?.[`strMeasure${index + 1}`]?.trim(),
+})).filter(item => item.ingredient);
 
-
-
-  const instructionSteps = meal?.strInstructions
+const instructionSteps = meal?.strInstructions
+  ? meal.strInstructions.includes("\n")
     ? meal.strInstructions
-        .split(/\r?\n/)
-        .map((step) => step.replace(/^\d+\.\s*/, '').trim())
+        .split(/\r?\n+/)
+        .map(step => step.replace(/^\d+\.\s*/, "").trim())
         .filter(Boolean)
-    : [];
-
+    : [meal.strInstructions.trim()]
+  : [];
+  console.log("MealId",mealId)
+console.log("Instr steps",instructionSteps)
   if (!meal) {
     return (
       <div className="meal-detail-view meal-detail-empty">
@@ -39,10 +42,16 @@ const ingredientList = Array.from({ length: 20 }, (_, index) => {
 
   return (
     <div className="meal-detail-view">
-      <button type="button" onClick={() => navigate('/')}>
-        ← Back
-      </button>
-
+  
+ 
+        <div style={{"text-align":"center"}}>
+      {/* <h2>Meal Detail View</h2> */}
+      <h2>{isRandomMeal && 'Fetching a surprise meal...' || 'Meal Detail View'}</h2>
+            
+</div>
+<span><button type="button" onClick={() => navigate('/')}>
+        Home
+      </button></span>
       <div className="meal-detail-hero">
         <img src={meal.strMealThumb} alt={meal.strMeal} />
 
@@ -50,8 +59,8 @@ const ingredientList = Array.from({ length: 20 }, (_, index) => {
           <h2>{meal.strMeal}</h2>
 
           <div className="meal-info">
-            <div className="meal-tag">🌍 {meal.strArea}</div>
-            <div className="meal-tag">🍽️ {meal.strCategory}</div>
+            <div className="meal-tag">🌍 {meal.strArea  || 'N/A'}</div>
+            <div className="meal-tag">🍽️ {meal.strCategory || 'N/A'}</div>
           </div>
 
           <div className="instructions">
@@ -91,6 +100,8 @@ const ingredientList = Array.from({ length: 20 }, (_, index) => {
       </div>
     </div>
   );
+
 }
 
 export default MealDetailView;
+

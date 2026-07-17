@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import '../styles/navbar.css'
 import '../styles/ui.css'
 
 const Navbar = ({favoritesCount}) => {
+const navigate= useNavigate();
   return (
     <header className="home-navbar">
       <div className="home-navbar__brand">
@@ -15,9 +17,10 @@ const Navbar = ({favoritesCount}) => {
       </div>
 
       <div className="home-navbar__actions">
-        <span className="home-pill">Favs ({favoritesCount})</span>
-        <button type="button" className="home-button">
-          Surprise Me
+        
+          <button type="button" className="home-pill" onClick={() => navigate("/favorites")}>Favs ({favoritesCount})</button>
+        <button type="button" className="home-button" onClick={() => navigate("/random")}>
+          Surprise Me old
         </button>
       </div>
     </header>

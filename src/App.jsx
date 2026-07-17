@@ -4,6 +4,8 @@ import { Route, Routes } from 'react-router-dom';
 import MealGrid from './Component/MealGrid';
 import SearchFilter from './Component/SearchFilter';
 import Navbar from './Component/NavBar';
+import FavoritesView from './Component/FavoritesView';
+import RandomView from './Component/RandomView';
 import useDebounce from './CustomHook/useDebounce';
 import useMeals from './CustomHook/useMeals';
 import MealDetailView from './Component/MealDetailView';
@@ -74,10 +76,14 @@ function MyApp() {
     );
 
     return (
+        <favContext.Provider value={{ favorites, setFavorites }}>
         <Routes>
             <Route path="/" element={homePage} />
-            <Route path="/meal/:mealId" element={<MealDetailView meals={meals} />} />
+            <Route path="/favorites" element={<FavoritesView />} />
+            <Route path="/random" element={<RandomView />} />
+            <Route path="/meal/:mealId" element={<MealDetailView />} />
         </Routes>
+        </favContext.Provider>
     );
 }
 

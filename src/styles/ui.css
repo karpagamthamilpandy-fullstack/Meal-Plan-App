@@ -32,6 +32,7 @@
   color: #4a3528;
   border-radius: 999px;
   font: inherit;
+ 
   
 }
 
@@ -39,6 +40,7 @@
   padding: 8px 12px;
   font-size: 0.85rem;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .home-button {
